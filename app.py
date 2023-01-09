@@ -220,6 +220,26 @@ def profile(user_id):
 
     form = UserUpdateForm(obj=user)
 
+    if form.validate_on_submit():
+        
+        is_auth = User.authenticate(user.username ,form.password.data)
+
+        if is_auth == False:
+            # Checks validity of password when updating
+            flash("Password is Invalid, Profile update failed", 'danger')
+            return redirect('/')
+
+        user.image_url = form.image_url.data
+        user.header_image_url = form.header_image_url.data
+        user.bio = form.bio.data
+        user.location = form.location.data
+        user.username = form.username.data
+        user.email = form.email.data
+        
+        db.session.commit()
+
+        return redirect(f"/users/{user.id}")
+
     return render_template("users/edit.html", form = form, user = user)
     
 @app.route('/users/delete', methods=["POST"])
