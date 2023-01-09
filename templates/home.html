@@ -42,7 +42,7 @@
       <ul class="list-group" id="messages">
         {% for msg in messages %}
           <li class="list-group-item">
-            <a href="/messages/{{ msg.id  }}" class="message-link"/>
+            <a href="/messages/{{ msg.id  }}" class="message-link">
             <a href="/users/{{ msg.user.id }}">
               <img src="{{ msg.user.image_url }}" alt="" class="timeline-image">
             </a>
@@ -52,13 +52,14 @@
               <p>{{ msg.text }}</p>
             </div>
             
-            {% if msg.user != g.user %}
+            {% if g.user.id != msg.user_id %}
             <form method="POST" action="/users/add_like/{{ msg.id }}" id="messages-form">
               <button class="
                 btn 
                 btn-sm 
-                {{'btn-primary' if msg.likes else 'btn-secondary'}}"
-              >LIKE
+                {{'btn-primary' if msg.id in liked else 'btn-secondary'}}"
+              >
+              LIKE
                 <!-- <i class="fa fa-thumbs-up"></i>  -->
               </button>
             </form>
