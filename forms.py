@@ -20,8 +20,8 @@ class UserAddForm(FlaskForm):
 class UserUpdateForm(FlaskForm):
     """Form for updating users profile"""
     
-    image_url = StringField('Profile Picture')
-    header_image_url = StringField('Profile Background')
+    image_url = StringField('Profile Picture URL')
+    header_image_url = StringField('Profile Background URL')
     bio = TextAreaField("Bio")
     location = StringField("Location")
     username = StringField('Username', validators=[DataRequired()])
