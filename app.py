@@ -1,7 +1,7 @@
 import os
 
 from secret import databaseKey
-from flask import Flask, render_template, request, flash, redirect, session, g
+from flask import Flask, render_template, request, flash, redirect, session, g, url_for
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
 
@@ -50,8 +50,8 @@ def do_login(user):
 def do_logout():
     """Logout user."""
 
-    if CURR_USER_KEY in session:
-        del session[CURR_USER_KEY]
+    db.session.clear()
+    return redirect(url_for('homepage'))
 
 
 @app.route('/signup', methods=["GET", "POST"])
