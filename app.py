@@ -150,6 +150,8 @@ def users_show(user_id):
                 .order_by(Message.timestamp.desc())
                 .limit(100)
                 .all())
+
+    
     return render_template('users/show.html', user=user, messages=messages)
 
 
@@ -260,6 +262,10 @@ def delete_user():
 @app.route(f'/users/add_like/<int:message_id>', methods=['POST'])
 def add_like(message_id):
     
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
+
     message = Message.query.get_or_404(message_id)
 
     g.user.likes.append(message)
@@ -267,6 +273,38 @@ def add_like(message_id):
     db.session.commit()
 
     return redirect('/')
+
+@app.route(f'/users/remove_like/<int:message_id>', methods=['POST'])
+def remove_like(message_id):
+
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
+
+    message = Message.query.get_or_404(message_id)
+
+    g.user.likes.remove(message)
+    db.session.commit()
+
+    return redirect('/')
+
+@app.route(f'/users/<int:user_id>/likes', methods=['GET'])
+def show_likes(user_id):
+
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
+
+    user = User.query.get_or_404(user_id)
+
+    liked_messages = [message.id for message in user.likes]
+    liked_messages_show = []
+
+    for m in liked_messages:
+        message = Message.query.get(m)
+        liked_messages_show.append(message)
+
+    return render_template("show_likes.html")
 
 ##############################################################################
 # Messages routes:

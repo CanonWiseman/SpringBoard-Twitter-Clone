@@ -53,14 +53,13 @@
             </div>
             
             {% if g.user.id != msg.user_id %}
-            <form method="POST" action="/users/add_like/{{ msg.id }}" id="messages-form">
+            <form method="POST" action="/users/{{'remove_like' if msg.id in liked else 'add_like' }}/{{ msg.id }}" id="messages-form">
               <button class="
                 btn 
                 btn-sm 
-                {{'btn-primary' if msg.id in liked else 'btn-secondary'}}"
+                {{'btn-primary' if msg.id not in liked else 'btn-warning'}}"
               >
-              LIKE
-                <!-- <i class="fa fa-thumbs-up"></i>  -->
+                <i class="{{'fa fa-thumbs-up' if msg.id not in liked else 'fa fa-star'}}"></i> 
               </button>
             </form>
             {% endif %}
