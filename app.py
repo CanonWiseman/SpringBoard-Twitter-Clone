@@ -304,7 +304,7 @@ def show_likes(user_id):
         message = Message.query.get(m)
         liked_messages_show.append(message)
 
-    return render_template("show_likes.html")
+    return render_template("users/likes.html", liked=liked_messages_show, user=user)
 
 ##############################################################################
 # Messages routes:
